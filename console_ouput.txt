@@ -1,0 +1,345 @@
+Started by an SCM change
+Obtained Jenkinsfile from git https://github.com/vriddhi-07/To_Do_List_App
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential github-creds
+ > git.exe rev-parse --resolve-git-dir C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo\.git # timeout=10
+Fetching changes from the remote Git repository
+ > git.exe config remote.origin.url https://github.com/vriddhi-07/To_Do_List_App # timeout=10
+Fetching upstream changes from https://github.com/vriddhi-07/To_Do_List_App
+ > git.exe --version # timeout=10
+ > git --version # 'git version 2.44.0.windows.1'
+using GIT_ASKPASS to set credentials 
+ > git.exe fetch --tags --force --progress -- https://github.com/vriddhi-07/To_Do_List_App +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git.exe rev-parse "refs/remotes/origin/main^{commit}" # timeout=10
+Checking out Revision b2412471176a7654d6efedd9a044741d6f2454be (refs/remotes/origin/main)
+ > git.exe config core.sparsecheckout # timeout=10
+ > git.exe checkout -f b2412471176a7654d6efedd9a044741d6f2454be # timeout=10
+Commit message: "Update README.md"
+ > git.exe rev-list --no-walk ae79146718c56911dad0ad059a61de0ee1bd2c3d # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential github-creds
+ > git.exe rev-parse --resolve-git-dir C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo\.git # timeout=10
+Fetching changes from the remote Git repository
+ > git.exe config remote.origin.url https://github.com/vriddhi-07/To_Do_List_App # timeout=10
+Fetching upstream changes from https://github.com/vriddhi-07/To_Do_List_App
+ > git.exe --version # timeout=10
+ > git --version # 'git version 2.44.0.windows.1'
+using GIT_ASKPASS to set credentials 
+ > git.exe fetch --tags --force --progress -- https://github.com/vriddhi-07/To_Do_List_App +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git.exe rev-parse "refs/remotes/origin/main^{commit}" # timeout=10
+Checking out Revision b2412471176a7654d6efedd9a044741d6f2454be (refs/remotes/origin/main)
+ > git.exe config core.sparsecheckout # timeout=10
+ > git.exe checkout -f b2412471176a7654d6efedd9a044741d6f2454be # timeout=10
+Commit message: "Update README.md"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo>python -m pip install --upgrade pip 
+Requirement already satisfied: pip in c:\python313\lib\site-packages (25.3)
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo>pip install -r requirements.txt 
+Requirement already satisfied: pytest in c:\python313\lib\site-packages (from -r requirements.txt (line 1)) (9.0.1)
+Requirement already satisfied: colorama>=0.4 in c:\python313\lib\site-packages (from pytest->-r requirements.txt (line 1)) (0.4.6)
+Requirement already satisfied: iniconfig>=1.0.1 in c:\python313\lib\site-packages (from pytest->-r requirements.txt (line 1)) (2.3.0)
+Requirement already satisfied: packaging>=22 in c:\python313\lib\site-packages (from pytest->-r requirements.txt (line 1)) (25.0)
+Requirement already satisfied: pluggy<2,>=1.5 in c:\python313\lib\site-packages (from pytest->-r requirements.txt (line 1)) (1.6.0)
+Requirement already satisfied: pygments>=2.7.2 in c:\python313\lib\site-packages (from pytest->-r requirements.txt (line 1)) (2.19.2)
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run Tests)
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo>pytest -v 
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.1, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo
+collecting ... collected 2 items
+
+test_todo.py::test_add_task_creates_file_and_adds PASSED                 [ 50%]
+test_todo.py::test_save_and_load_todos PASSED                            [100%]
+
+============================== 2 passed in 0.03s ==============================
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo>docker build -t vriddhi07/imt2023611-todo:9 . 
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 284B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 ...
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 1.6s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [1/5] FROM docker.io/library/python:3.11-slim@sha256:193fdd0bbcb3d2ae612bd6cc3548d2f7c78d65b549fcaa8af75624c47474444d
+#5 resolve docker.io/library/python:3.11-slim@sha256:193fdd0bbcb3d2ae612bd6cc3548d2f7c78d65b549fcaa8af75624c47474444d 0.0s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 96.20kB 0.2s done
+#6 DONE 0.2s
+
+#7 [2/5] WORKDIR /app
+#7 CACHED
+
+#8 [3/5] COPY requirements.txt .
+#8 CACHED
+
+#9 [4/5] RUN pip install -r requirements.txt
+#9 CACHED
+
+#10 [5/5] COPY . .
+#10 DONE 0.5s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 0.7s done
+#11 exporting manifest sha256:0611eeb1a8ba19029aca6d92d10ff08ce1455ba3e77313eb769f0153a47e86a7 0.0s done
+#11 exporting config sha256:13b3e0bd98ceba919796b55239e559b68e223eae5b69495c69166f58a2c9c27f 0.0s done
+#11 exporting attestation manifest sha256:4df7327258a83c48fdd1124122360bbd68e7d2e7b7e1fdbdba95acdb517f987c 0.0s done
+#11 exporting manifest list sha256:d46ac0dce57908220bb4c6ed234313ad534bde7a8bd3d6b3ac4fa7ffadbffcde 0.0s done
+#11 naming to docker.io/vriddhi07/imt2023611-todo:9 done
+#11 unpacking to docker.io/vriddhi07/imt2023611-todo:9
+#11 unpacking to docker.io/vriddhi07/imt2023611-todo:9 0.3s done
+#11 DONE 1.2s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Docker Image)
+[Pipeline] withCredentials
+Masking supported pattern matches of %PASS%
+[Pipeline] {
+[Pipeline] bat
+
+C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo>docker login -u vriddhi07 -p **** 
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+Login Succeeded
+
+C:\ProgramData\Jenkins\.jenkins\workspace\ci-cd demo>docker push vriddhi07/imt2023611-todo:9 
+The push refers to repository [docker.io/vriddhi07/imt2023611-todo]
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+1771569cc129: Layer already exists
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+72d7d4bee148: Waiting
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Waiting
+72d7d4bee148: Layer already exists
+22b63e76fde1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Waiting
+3faa9462b6f1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Waiting
+0e4bc2bd6656: Layer already exists
+22b63e76fde1: Waiting
+0d16b7c2bd2b: Waiting
+b3dd773c3296: Layer already exists
+22b63e76fde1: Layer already exists
+19b0b87d9e39: Waiting
+f9c053bb6d8e: Layer already exists
+3faa9462b6f1: Layer already exists
+0d16b7c2bd2b: Waiting
+19b0b87d9e39: Pushed
+0d16b7c2bd2b: Pushed
+9: digest: sha256:d46ac0dce57908220bb4c6ed234313ad534bde7a8bd3d6b3ac4fa7ffadbffcde size: 856
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
