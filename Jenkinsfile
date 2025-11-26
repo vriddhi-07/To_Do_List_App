@@ -14,7 +14,7 @@ pipeline {
                 checkout([$class: 'GitSCM',
                   branches: [[name: '*/main']],
                   userRemoteConfigs: [[
-                    url: 'https://github.com/vriddhi-07/To_Do_List_App>',
+                    url: 'https://github.com/vriddhi-07/To_Do_List_App',
                     credentialsId: 'github-creds'
                   ]]
                 ])
@@ -60,4 +60,5 @@ pipeline {
         }
 
     } // end stages
+
 } // end pipeline
